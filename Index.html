@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rempah Gunung — Festival Musik Tahunan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --soil:    #2B1D0E;
+      --bark:    #4A2E14;
+      --spice:   #C4622D;
+      --turmeric:#E8A838;
+      --moss:    #5C6B3A;
+      --leaf:    #8FA660;
+      --cream:   #F5EDD8;
+      --linen:   #EDE0C4;
+      --smoke:   #C9B99A;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Lora', serif;
+      background: var(--soil);
+      color: var(--cream);
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      opacity: .35;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.2rem 4rem;
+      background: linear-gradient(to bottom, rgba(43,29,14,.92), transparent);
+      backdrop-filter: blur(2px);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem; font-weight: 900;
+      letter-spacing: .12em; color: var(--turmeric);
+      text-decoration: none; text-transform: uppercase;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-family: 'DM Mono', monospace; font-size: .75rem;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: var(--smoke); text-decoration: none;
+      transition: color .25s;
+    }
+    .nav-links a:hover { color: var(--turmeric); }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative; min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      text-align: center; overflow: hidden;
+      padding: 0 2rem;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0; z-index: -1;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 70%, rgba(196,98,45,.22) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 20% 30%, rgba(92,107,58,.25) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 80% 20%, rgba(232,168,56,.12) 0%, transparent 55%),
+        linear-gradient(175deg, #1a0f06 0%, #2B1D0E 40%, #3a2210 100%);
+    }
+
+    /* SVG mountain silhouette */
+    .mountain-silhouette {
+      position: absolute; bottom: 0; left: 0; width: 100%; z-index: -1;
+      opacity: .55;
+    }
+
+    .hero-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: .7rem; letter-spacing: .3em; text-transform: uppercase;
+      color: var(--spice); margin-bottom: 1.8rem;
+      animation: fadeUp .8s ease both;
+    }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(4.5rem, 12vw, 10rem);
+      font-weight: 900; line-height: .9;
+      color: var(--cream);
+      animation: fadeUp .9s .1s ease both;
+    }
+    .hero-title span { color: var(--turmeric); font-style: italic; }
+    .hero-subtitle {
+      font-family: 'Lora', serif; font-style: italic;
+      font-size: clamp(1rem, 2.2vw, 1.4rem);
+      color: var(--smoke); margin-top: 1.8rem; max-width: 480px;
+      animation: fadeUp .9s .2s ease both;
+    }
+    .hero-date-badge {
+      margin-top: 3rem;
+      display: inline-flex; flex-direction: column; align-items: center;
+      border: 1px solid rgba(232,168,56,.35);
+      padding: 1rem 2.5rem;
+      position: relative;
+      animation: fadeUp .9s .3s ease both;
+    }
+    .hero-date-badge::before, .hero-date-badge::after {
+      content: '◆';
+      position: absolute; top: 50%; transform: translateY(-50%);
+      font-size: .5rem; color: var(--turmeric);
+    }
+    .hero-date-badge::before { left: .8rem; }
+    .hero-date-badge::after  { right: .8rem; }
+    .badge-day {
+      font-family: 'DM Mono', monospace; font-size: .65rem;
+      letter-spacing: .25em; text-transform: uppercase; color: var(--spice);
+    }
+    .badge-date {
+      font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700;
+      color: var(--turmeric);
+    }
+    .badge-location {
+      font-family: 'DM Mono', monospace; font-size: .65rem;
+      letter-spacing: .15em; color: var(--smoke);
+    }
+
+    .scroll-hint {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: .5rem;
+      font-family: 'DM Mono', monospace; font-size: .6rem;
+      letter-spacing: .2em; color: var(--smoke); opacity: .6;
+      animation: fadeUp 1s .6s both;
+    }
+    .scroll-line {
+      width: 1px; height: 40px;
+      background: linear-gradient(to bottom, var(--spice), transparent);
+      animation: scrollPulse 1.8s infinite;
+    }
+
+    /* ── SECTION BASE ── */
+    section { position: relative; z-index: 1; }
+    .section-inner { max-width: 1100px; margin: 0 auto; padding: 6rem 2.5rem; }
+    .section-label {
+      font-family: 'DM Mono', monospace; font-size: .65rem;
+      letter-spacing: .3em; text-transform: uppercase;
+      color: var(--spice); margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .section-label::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(to right, rgba(196,98,45,.4), transparent);
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900; line-height: 1.05;
+      color: var(--cream); margin-bottom: .5rem;
+    }
+    .section-title em { color: var(--turmeric); font-style: italic; }
+
+    /* ── DIVIDER ── */
+    .divider {
+      width: 100%; height: 1px;
+      background: linear-gradient(to right, transparent, rgba(232,168,56,.25), transparent);
+    }
+
+    /* ── LINEUP ── */
+    #lineup { background: linear-gradient(180deg, var(--soil) 0%, #1f1408 100%); }
+
+    .lineup-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.5rem; margin-top: 3.5rem;
+    }
+    .artist-card {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(232,168,56,.12);
+      padding: 2rem 1.5rem;
+      position: relative; overflow: hidden;
+      transition: transform .3s, border-color .3s, background .3s;
+      cursor: default;
+    }
+    .artist-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(196,98,45,.08), transparent);
+      opacity: 0; transition: opacity .3s;
+    }
+    .artist-card:hover { transform: translateY(-4px); border-color: rgba(232,168,56,.35); background: rgba(255,255,255,.055); }
+    .artist-card:hover::before { opacity: 1; }
+    .artist-headliner {
+      font-family: 'DM Mono', monospace; font-size: .6rem;
+      letter-spacing: .2em; color: var(--spice);
+      text-transform: uppercase; margin-bottom: .8rem;
+    }
+    .artist-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem; font-weight: 700;
+      color: var(--cream); line-height: 1.15; margin-bottom: .6rem;
+    }
+    .artist-genre {
+      font-family: 'DM Mono', monospace; font-size: .65rem;
+      color: var(--leaf); letter-spacing: .1em;
+    }
+    .artist-day {
+      margin-top: 1.2rem;
+      font-family: 'DM Mono', monospace; font-size: .6rem;
+      letter-spacing: .18em; text-transform: uppercase;
+      color: var(--smoke); opacity: .7;
+    }
+    .artist-card.featured {
+      grid-column: span 2;
+      background: rgba(196,98,45,.07);
+      border-color: rgba(232,168,56,.3);
+    }
+    .artist-card.featured .artist-name { font-size: 2rem; }
+
+    /* ── SCHEDULE ── */
+    #jadwal { background: #1a0f06; }
+    .schedule-tabs {
+      display: flex; gap: 0; margin-top: 3rem;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+    }
+    .tab-btn {
+      font-family: 'DM Mono', monospace; font-size: .72rem;
+      letter-spacing: .15em; text-transform: uppercase;
+      padding: .9rem 2rem; background: none; border: none;
+      color: var(--smoke); cursor: pointer;
+      border-bottom: 2px solid transparent; margin-bottom: -1px;
+      transition: color .2s, border-color .2s;
+    }
+    .tab-btn.active { color: var(--turmeric); border-bottom-color: var(--turmeric); }
+    .tab-btn:hover:not(.active) { color: var(--cream); }
+
+    .schedule-day { display: none; }
+    .schedule-day.active { display: block; }
+
+    .schedule-item {
+      display: grid; grid-template-columns: 90px 1fr auto;
+      align-items: center; gap: 1.5rem;
+      padding: 1.4rem 0;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      transition: background .2s;
+    }
+    .schedule-item:hover { background: rgba(255,255,255,.02); }
+    .sch-time {
+      font-family: 'DM Mono', monospace; font-size: .8rem;
+      color: var(--spice); letter-spacing: .05em;
+    }
+    .sch-artist {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem; color: var(--cream);
+    }
+    .sch-stage {
+      font-family: 'DM Mono', monospace; font-size: .62rem;
+      letter-spacing: .15em; text-transform: uppercase;
+      color: var(--moss); background: rgba(92,107,58,.15);
+      padding: .3rem .8rem; border-radius: 2px;
+      white-space: nowrap;
+    }
+
+    /* ── LOKASI ── */
+    #lokasi { background: linear-gradient(180deg, #1a0f06 0%, var(--soil) 100%); }
+    .lokasi-layout {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; margin-top: 3.5rem; align-items: start;
+    }
+    .map-placeholder {
+      position: relative; height: 360px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(232,168,56,.15);
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .map-inner-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 40% 60%, rgba(92,107,58,.18) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 70% 30%, rgba(196,98,45,.1) 0%, transparent 60%),
+        #1f1408;
+    }
+    .map-mountain-icon {
+      position: relative; z-index: 1;
+      text-align: center; color: var(--smoke); opacity: .5;
+    }
+    .map-mountain-icon svg { width: 80px; height: 80px; }
+    .map-pin-label {
+      font-family: 'DM Mono', monospace; font-size: .65rem;
+      letter-spacing: .15em; color: var(--turmeric); margin-top: .6rem;
+      text-transform: uppercase;
+    }
+    .map-border-deco {
+      position: absolute; inset: 8px;
+      border: 1px dashed rgba(232,168,56,.12); pointer-events: none;
+    }
+
+    .lokasi-info { padding-top: .5rem; }
+    .lokasi-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem; font-weight: 700;
+      color: var(--turmeric); margin-bottom: .4rem;
+    }
+    .lokasi-sub {
+      font-family: 'Lora', serif; font-style: italic;
+      color: var(--smoke); margin-bottom: 2rem;
+    }
+    .lokasi-detail-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+    .lokasi-detail-list li {
+      display: flex; gap: 1rem; align-items: flex-start;
+      font-size: .95rem; color: var(--linen);
+    }
+    .detail-icon {
+      color: var(--spice); font-size: 1rem; line-height: 1.5;
+      flex-shrink: 0;
+    }
+    .detail-text strong {
+      display: block; font-family: 'DM Mono', monospace;
+      font-size: .65rem; letter-spacing: .15em; text-transform: uppercase;
+      color: var(--smoke); margin-bottom: .2rem;
+    }
+
+    /* ── TIKET ── */
+    #tiket { background: var(--soil); }
+    .tiket-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem; margin-top: 3.5rem;
+    }
+    .tiket-card {
+      border: 1px solid rgba(232,168,56,.18);
+      padding: 2.5rem 2rem;
+      position: relative; overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: transform .3s, box-shadow .3s;
+    }
+    .tiket-card::after {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 2px;
+    }
+    .tiket-card.early::after  { background: var(--leaf); }
+    .tiket-card.regular::after { background: var(--spice); }
+    .tiket-card.vip::after    { background: var(--turmeric); }
+    .tiket-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,.4); }
+    .tiket-card.vip {
+      background: rgba(232,168,56,.05);
+      border-color: rgba(232,168,56,.4);
+    }
+    .tiket-badge {
+      font-family: 'DM Mono', monospace; font-size: .6rem;
+      letter-spacing: .25em; text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+    .early .tiket-badge { color: var(--leaf); }
+    .regular .tiket-badge { color: var(--spice); }
+    .vip .tiket-badge { color: var(--turmeric); }
+    .tiket-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem; font-weight: 700;
+      color: var(--cream); margin-bottom: .3rem;
+    }
+    .tiket-price {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem; font-weight: 900; margin-bottom: 2rem;
+    }
+    .early .tiket-price { color: var(--leaf); }
+    .regular .tiket-price { color: var(--spice); }
+    .vip .tiket-price { color: var(--turmeric); }
+    .tiket-price sup { font-size: 1rem; vertical-align: super; }
+    .tiket-features {
+      list-style: none; flex: 1;
+      display: flex; flex-direction: column; gap: .7rem;
+      margin-bottom: 2rem;
+    }
+    .tiket-features li {
+      font-family: 'Lora', serif; font-size: .9rem;
+      color: var(--smoke); display: flex; gap: .6rem;
+    }
+    .tiket-features li::before { content: '—'; color: var(--spice); flex-shrink: 0; }
+    .btn-tiket {
+      font-family: 'DM Mono', monospace; font-size: .7rem;
+      letter-spacing: .2em; text-transform: uppercase;
+      padding: 1rem 1.5rem; border: 1px solid;
+      cursor: pointer; text-align: center;
+      text-decoration: none; display: block;
+      transition: background .25s, color .25s;
+    }
+    .early .btn-tiket    { border-color: var(--leaf);     color: var(--leaf); }
+    .regular .btn-tiket  { border-color: var(--spice);    color: var(--spice); }
+    .vip .btn-tiket      { background: var(--turmeric); border-color: var(--turmeric); color: var(--soil); }
+    .early .btn-tiket:hover   { background: var(--leaf);  color: var(--soil); }
+    .regular .btn-tiket:hover { background: var(--spice); color: var(--cream); }
+    .vip .btn-tiket:hover     { background: #d4962a; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #110b04;
+      padding: 4rem 2.5rem 2.5rem;
+      text-align: center;
+    }
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem; font-weight: 900;
+      color: var(--turmeric); letter-spacing: .08em;
+      text-transform: uppercase; margin-bottom: .5rem;
+    }
+    .footer-tagline {
+      font-family: 'Lora', serif; font-style: italic;
+      color: var(--smoke); font-size: .95rem; margin-bottom: 3rem;
+    }
+    .footer-links {
+      display: flex; justify-content: center; gap: 3rem;
+      list-style: none; margin-bottom: 3rem;
+    }
+    .footer-links a {
+      font-family: 'DM Mono', monospace; font-size: .65rem;
+      letter-spacing: .15em; text-transform: uppercase;
+      color: var(--smoke); text-decoration: none;
+      transition: color .2s;
+    }
+    .footer-links a:hover { color: var(--turmeric); }
+    .footer-copy {
+      font-family: 'DM Mono', monospace; font-size: .6rem;
+      letter-spacing: .12em; color: var(--bark); margin-top: 1.5rem;
+    }
+    .footer-divider {
+      width: 100%; height: 1px; margin-bottom: 1.5rem;
+      background: linear-gradient(to right, transparent, rgba(232,168,56,.2), transparent);
+    }
+
+    /* ── ORNAMENTAL ELEMENTS ── */
+    .ornament {
+      display: block; text-align: center;
+      color: var(--spice); opacity: .35;
+      font-size: 1rem; letter-spacing: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: .6; transform: scaleY(1); }
+      50% { opacity: .2; transform: scaleY(.6); }
+    }
+
+    /* ── REVEAL ON SCROLL ── */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s, transform .7s; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .artist-card.featured { grid-column: span 1; }
+      .lokasi-layout { grid-template-columns: 1fr; }
+      .tiket-grid { grid-template-columns: 1fr; }
+      .schedule-item { grid-template-columns: 70px 1fr; }
+      .sch-stage { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">Rempah Gunung</a>
+  <ul class="nav-links">
+    <li><a href="#lineup">Lineup</a></li>
+    <li><a href="#jadwal">Jadwal</a></li>
+    <li><a href="#lokasi">Lokasi</a></li>
+    <li><a href="#tiket">Tiket</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+
+  <!-- Mountain SVG -->
+  <svg class="mountain-silhouette" viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,320 L0,240 L120,180 L200,220 L340,100 L460,190 L560,60 L680,160 L800,30 L920,150 L1040,80 L1160,170 L1280,110 L1360,200 L1440,150 L1440,320 Z" fill="#1a0f06"/>
+    <path d="M0,320 L0,270 L180,230 L280,260 L400,180 L500,240 L620,150 L720,210 L840,120 L960,200 L1100,160 L1200,220 L1320,180 L1440,230 L1440,320 Z" fill="#221409" opacity=".8"/>
+  </svg>
+
+  <p class="hero-eyebrow">Festival Musik Tahunan · Edisi 2025</p>
+  <h1 class="hero-title">Rempah<br/><span>Gunung</span></h1>
+  <p class="hero-subtitle">Di mana setiap nada melebur bersama kabut, tanah, dan semangat — merayakan keberagaman suara dari penjuru nusantara.</p>
+
+  <div class="hero-date-badge">
+    <span class="badge-day">Sabtu & Minggu</span>
+    <span class="badge-date">14 – 15 Juni 2025</span>
+    <span class="badge-location">Cibodas, Cianjur · Jawa Barat</span>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Jelajahi</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- LINEUP -->
+<section id="lineup">
+  <div class="section-inner">
+    <p class="section-label reveal">Penampil</p>
+    <h2 class="section-title reveal">Lineup <em>Artis</em></h2>
+    <p class="reveal" style="color:var(--smoke);font-style:italic;max-width:500px;margin-top:.5rem;">Dari folk yang menyentuh hingga beat yang membakar — suara dari semua penjuru.</p>
+
+    <span class="ornament reveal">✦ ✦ ✦</span>
+
+    <div class="lineup-grid">
+      <div class="artist-card featured reveal">
+        <span class="artist-headliner">✦ Headliner Utama</span>
+        <div class="artist-name">Kila Nusantara</div>
+        <div class="artist-genre">World Music · Etnik Kontemporer</div>
+        <div class="artist-day">Sabtu, 14 Juni · Panggung Utama</div>
+      </div>
+      <div class="artist-card featured reveal">
+        <span class="artist-headliner">✦ Headliner Utama</span>
+        <div class="artist-name">Hujan Tropis</div>
+        <div class="artist-genre">Indie Folk · Ambient</div>
+        <div class="artist-day">Minggu, 15 Juni · Panggung Utama</div>
+      </div>
+
+      <div class="artist-card reveal">
+        <div class="artist-name">Bagas & Daun</div>
+        <div class="artist-genre">Akustik Folk</div>
+        <div class="artist-day">Sabtu · Panggung Hutan</div>
+      </div>
+      <div class="artist-card reveal">
+        <div class="artist-name">Serat Bunyi</div>
+        <div class="artist-genre">Jazz Eksperimental</div>
+        <div class="artist-day">Sabtu · Panggung Kabut</div>
+      </div>
+      <div class="artist-card reveal">
+        <div class="artist-name">Rimba Kolektif</div>
+        <div class="artist-genre">Post-Rock · Instrumental</div>
+        <div class="artist-day">Sabtu · Panggung Utama</div>
+      </div>
+      <div class="artist-card reveal">
+        <div class="artist-name">Tanah Merah</div>
+        <div class="artist-genre">Blues · R&B Lokal</div>
+        <div class="artist-day">Minggu · Panggung Hutan</div>
+      </div>
+      <div class="artist-card reveal">
+        <div class="artist-name">Genta Angkasa</div>
+        <div class="artist-genre">Electronic · Downtempo</div>
+        <div class="artist-day">Minggu · Panggung Kabut</div>
+      </div>
+      <div class="artist-card reveal">
+        <div class="artist-name">Ombak Kering</div>
+        <div class="artist-genre">Punk · Alternative</div>
+        <div class="artist-day">Minggu · Panggung Utama</div>
+      </div>
+    </div>
+
+    <p class="reveal" style="margin-top:2rem;font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.15em;color:var(--smoke);text-align:center;">
+      + 12 ARTIS LAINNYA AKAN SEGERA DIUMUMKAN
+    </p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- JADWAL -->
+<section id="jadwal">
+  <div class="section-inner">
+    <p class="section-label reveal">Program</p>
+    <h2 class="section-title reveal">Jadwal <em>Acara</em></h2>
+
+    <div class="schedule-tabs reveal">
+      <button class="tab-btn active" onclick="showDay('hari1', this)">Sabtu, 14 Juni</button>
+      <button class="tab-btn" onclick="showDay('hari2', this)">Minggu, 15 Juni</button>
+    </div>
+
+    <div id="hari1" class="schedule-day active reveal">
+      <div class="schedule-item">
+        <span class="sch-time">10:00</span>
+        <span class="sch-artist">Gerbang Dibuka &amp; Pasar Rempah</span>
+        <span class="sch-stage">Seluruh Area</span>
+      </div>
+      <div class="schedule-item">
+        <span class="sch-time">11:30</span>
+        <span class="sch-artist">Bagas &amp; Daun</span>
+        <span class="sch-stage">Panggung Hutan</span>
+      </div>
+      <div class="schedule-item">
+        <span class="sch-time">13:00</span>
+        <span class="sch-artist">Serat Bunyi</span>
+        <span class="sch-stage">Panggung Kabut</span>
+      </div>
+      <div class="schedule-item">
+        <span class="sch-time">14:30</span>
+        <span class="sch-artist">Rimba Kolektif</span>
+        <span class="sch-stage">Panggung Utama</span>
+      </div>
+      <div class="schedule-item">
+        <span class="sch-time">16:00</span>
+        <span class="sch-artist">Diskusi Seni: Musik &amp; Alam</span>
+        <span class="sch-stage">Tenda Budaya</span>
+      </div>
+      <div class="schedule-item">
+        <span class="sch-time">18:30</span>
+        <span class="sch-artist">Sunset Session — Akustik Bersama</span>
+        <span class="sch-stage">Panggung Hutan</span>
+      </div>
+      <div class="schedule-item">
+        <span class="sch-time">20:00</span>
+        <span class="sch-artist">Kila Nusantara <em style="color:var(--turmeric)">✦ Headliner</em></span>
+        <span class="sch-stage">Panggung Utama</span>
+      </div>
+    </div>
+
+    <div id="hari2" class="schedule-day reveal">
+      <div class="schedule-item">
+        <span class="sch-time">09:00</span>
+        <span class="sch-artist">Sesi Yoga &amp; Meditasi Pagi</span>
+        <span class="sch-stage">Area Terbuka</span>
+      </div>
+      <div class="schedule-item">
+        <span class="sch-time">11:00</span>
+        <span class="sch-artist">Tanah Merah</span>
+        <span class="sch-stage">Panggung Hutan</span>
+      </div>
+      <div class="schedule-item">
+        <span class="sch-time">13:30</span>
+        <span class="sch-artist">Genta Angkasa</span>
+        <span class="sch-stage">Panggung Kabut</span>
+      </div>
+      <div class="schedule-item">
+        <span class="sch-time">15:00</span>
+        <span class="sch-artist">Ombak Kering</span>
+        <span class="sch-stage">Panggung Utama</span>
+      </div>
+      <div class="schedule-item">
+        <span class="sch-time">17:00</span>
+        <span class="sch-artist">Workshop: Alat Musik Tradisional</span>
+        <span class="sch-stage">Tenda Budaya</span>
+      </div>
+      <div class="schedule-item">
+        <span class="sch-time">19:00</span>
+        <span class="sch-artist">Sesi Api Unggun + Akustik</span>
+        <span class="sch-stage">Panggung Hutan</span>
+      </div>
+      <div class="schedule-item">
+        <span class="sch-time">20:30</span>
+        <span class="sch-artist">Hujan Tropis <em style="color:var(--turmeric)">✦ Headliner</em></span>
+        <span class="sch-stage">Panggung Utama</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- LOKASI -->
+<section id="lokasi">
+  <div class="section-inner">
+    <p class="section-label reveal">Tempat</p>
+    <h2 class="section-title reveal">Lokasi <em>Festival</em></h2>
+
+    <div class="lokasi-layout">
+      <div class="map-placeholder reveal">
+        <div class="map-inner-bg"></div>
+        <div class="map-mountain-icon">
+          <svg viewBox="0 0 100 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 70 L35 20 L50 40 L65 15 L90 70 Z" fill="rgba(92,107,58,.5)" stroke="rgba(232,168,56,.4)" stroke-width="1"/>
+            <circle cx="65" cy="15" r="4" fill="var(--turmeric)" opacity=".8"/>
+            <line x1="65" y1="5" x2="65" y2="11" stroke="var(--turmeric)" stroke-width="1.5"/>
+          </svg>
+          <div class="map-pin-label">Cibodas · Cianjur</div>
+        </div>
+        <div class="map-border-deco"></div>
+      </div>
+
+      <div class="lokasi-info reveal">
+        <div class="lokasi-name">Taman Rempah Cibodas</div>
+        <div class="lokasi-sub">Di antara kabut dan pepohonan, 1.300 mdpl</div>
+        <ul class="lokasi-detail-list">
+          <li>
+            <span class="detail-icon">◎</span>
+            <div class="detail-text">
+              <strong>Alamat</strong>
+              Jl. Kebun Raya Cibodas No.1, Cianjur, Jawa Barat 43253
+            </div>
+          </li>
+          <li>
+            <span class="detail-icon">◎</span>
+            <div class="detail-text">
+              <strong>Dari Jakarta</strong>
+              ±2 jam via Tol Cipularang → Cianjur. Shuttle tersedia dari Terminal Cianjur.
+            </div>
+          </li>
+          <li>
+            <span class="detail-icon">◎</span>
+            <div class="detail-text">
+              <strong>Area Camping</strong>
+              Tersedia area kemah untuk peserta. Booking terpisah melalui formulir tiket.
+            </div>
+          </li>
+          <li>
+            <span class="detail-icon">◎</span>
+            <div class="detail-text">
+              <strong>Ketinggian</strong>
+              1.300 m di atas permukaan laut. Harap bawa pakaian hangat terutama malam hari.
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TIKET -->
+<section id="tiket">
+  <div class="section-inner">
+    <p class="section-label reveal">Bergabung</p>
+    <h2 class="section-title reveal">Pilih <em>Tiketmu</em></h2>
+    <p class="reveal" style="color:var(--smoke);font-style:italic;margin-top:.5rem;">Tersedia dalam jumlah terbatas. Amankan sebelum kehabisan.</p>
+
+    <div class="tiket-grid">
+      <div class="tiket-card early reveal">
+        <div class="tiket-badge">Early Bird</div>
+        <div class="tiket-name">Pagi Gunung</div>
+        <div class="tiket-price"><sup>Rp</sup>250K</div>
+        <ul class="tiket-features">
+          <li>Akses 2 hari penuh</li>
+          <li>Semua panggung reguler</li>
+          <li>Pasar Rempah & Pameran</li>
+          <li>Gratis shuttle dari Cianjur</li>
+        </ul>
+        <a href="#" class="btn-tiket">Pesan Sekarang</a>
+      </div>
+
+      <div class="tiket-card regular reveal">
+        <div class="tiket-badge">Regular</div>
+        <div class="tiket-name">Kabut Hutan</div>
+        <div class="tiket-price"><sup>Rp</sup>350K</div>
+        <ul class="tiket-features">
+          <li>Akses 2 hari penuh</li>
+          <li>Semua panggung + workshop</li>
+          <li>Pasar Rempah & Pameran</li>
+          <li>Merchandise eksklusif</li>
+          <li>Gratis shuttle dari Cianjur</li>
+        </ul>
+        <a href="#" class="btn-tiket">Pesan Sekarang</a>
+      </div>
+
+      <div class="tiket-card vip reveal">
+        <div class="tiket-badge">✦ VIP</div>
+        <div class="tiket-name">Puncak Rempah</div>
+        <div class="tiket-price"><sup>Rp</sup>750K</div>
+        <ul class="tiket-features">
+          <li>Akses 2 hari + area VIP</li>
+          <li>Backstage pass terbatas</li>
+          <li>Meet & greet headliner</li>
+          <li>Paket camping premium</li>
+          <li>Merchandise + goodie bag</li>
+          <li>Akses semua sesi eksklusif</li>
+        </ul>
+        <a href="#" class="btn-tiket">Pesan VIP</a>
+      </div>
+    </div>
+
+    <p class="reveal" style="margin-top:2rem;font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.12em;color:var(--smoke);text-align:center;opacity:.7;">
+      HARGA EARLY BIRD BERLAKU HINGGA 30 APRIL 2025 · KAPASITAS TERBATAS 2.000 ORANG
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Rempah Gunung</div>
+  <div class="footer-tagline">Merayakan suara, memeluk alam — setiap tahun.</div>
+  <ul class="footer-links">
+    <li><a href="#">Instagram</a></li>
+    <li><a href="#">Twitter / X</a></li>
+    <li><a href="#">YouTube</a></li>
+    <li><a href="#">Hubungi Kami</a></li>
+    <li><a href="#">Sponsorship</a></li>
+  </ul>
+  <div class="footer-divider"></div>
+  <p class="footer-copy">© 2025 Rempah Gunung Festival. Semua hak dilindungi.</p>
+</footer>
+
+<script>
+  // Tab switching
+  function showDay(id, btn) {
+    document.querySelectorAll('.schedule-day').forEach(d => d.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 60);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
